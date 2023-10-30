@@ -1,0 +1,85 @@
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+}
+
+
+
+form{
+  background-color: rgb(246, 119, 16);
+  color: white;
+  width: 70%;
+  margin: auto;
+  height: 275px;
+  border-radius: 5px;
+  font-weight: 900;
+  font-size: 1.2rem;
+  padding-top: 10px;
+}
+
+form hr{
+  width: 90%;
+}
+
+
+.input{
+  border-radius: 2px;
+  border: 1px solid transparent;
+  width: 75%;
+  height: 25px;
+  margin-top: 5px;
+  text-align: left;
+  vertical-align: top;
+}
+
+
+
+
+.content{
+  height: 100px;
+  resize: none;
+}
+
+.input:focus,
+.content:focus {
+  outline: 1px solid blue;
+}
+
+.btn{
+  color: white;
+  background-color: blue;
+  border-radius: 4px;
+  width: 60px;
+  border: none;
+  height: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.blog{
+  background-color: rgb(192,237,236);
+  color: black;
+  font-weight: lighter;
+  border: 1px solid black;
+  margin: auto;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  display: block;
+  padding-left: 10px;
+  max-width: 70%;
+  text-align: start;  
+}
+
+.blog-btn{
+  display: flex;
+  flex-direction: row-reverse;
+}
+.remove{
+  background-color: red;
+  margin: 10px;
+  margin-right: 20px;
+}
