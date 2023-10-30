@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useRef } from "react";
+import { useEffect } from "react";
 
 export default function Blog(){
 
@@ -7,16 +9,23 @@ export default function Blog(){
     const [formData,setFormData] = useState({title:'',content:''})
     const [blogs, setBlogs] = useState([]);
 
+    const titleRef = useRef(null);
+
+    useEffect(()=>{
+        titleRef.current.focus();
+    },[])
+
     // setStates are asynchronous
 
     function handleSubmit(e){
         e.preventDefault();
         setBlogs([{title:formData.title, content:formData.content},...blogs]);  // Rest(...) operator what it does is to append new title and content to rest of blogs
-        setFormData({title:'',content:''})
+        setFormData({title:'',content:''});
+        titleRef.current.focus();
     }
 
     function removeBlog(i){
-        setBlogs(blogs.filter((blog,index)=>i!=index))
+        setBlogs(blogs.filter((blog,index)=>i!==index))
     }
 
     return(
@@ -28,6 +37,7 @@ export default function Blog(){
                         <input className="input"
                                placeholder="Enter the Title here...."
                                value={formData.title}
+                               ref={titleRef}
                                onChange={(e)=>{
                                 setFormData({title:e.target.value,content:formData.content})
                                }}
