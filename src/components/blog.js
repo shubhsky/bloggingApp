@@ -17,6 +17,15 @@ export default function Blog(){
 
     // setStates are asynchronous
 
+    useEffect(()=>{
+        if (blogs.length && blogs[0].title){
+            document.title = blogs[0].title;
+        }else{
+            document.title = 'No Blogs'
+        }
+
+    },[blogs]) //[blogs] is dependency array which means that when the blogs array get changed only then effect will be implemented
+
     function handleSubmit(e){
         e.preventDefault();
         setBlogs([{title:formData.title, content:formData.content},...blogs]);  // Rest(...) operator what it does is to append new title and content to rest of blogs
@@ -46,6 +55,7 @@ export default function Blog(){
                     <hr/>
                     <Row label="Content">
                         <textarea className="input content"
+                                required
                                placeholder="Content goes here...."
                                value={formData.content}
                                onChange={(e)=>{
