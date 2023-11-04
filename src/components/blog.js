@@ -1,13 +1,25 @@
-import { useState } from "react";
-import { useRef } from "react";
-import { useEffect } from "react";
+import {useReducer, useState, useEffect, useRef} from "react";
+
+function blogsReducer(blogs, action){
+    switch(action.type){
+        case "ADD":
+            return [action.blog, ...blogs]
+        case "REMOVE":
+            return blogs.filter((blog,index)=>index!==action.index)
+        default:
+            return []
+    }
+}
 
 export default function Blog(){
 
     // const [title, setTitle] = useState('');
     // const [content, setContent] = useState('');
     const [formData,setFormData] = useState({title:'',content:''})
-    const [blogs, setBlogs] = useState([]);
+    // const [blogs, setBlogs] = useState([]);
+
+    const [blogs, dispatch] = useReducer(blogsReducer,[])
+
 
     const titleRef = useRef(null);
 
@@ -26,15 +38,20 @@ export default function Blog(){
 
     },[blogs]) //[blogs] is dependency array which means that when the blogs array get changed only then effect will be implemented
 
+
+    // userReducer hook is used when a state is maniputlated using multiple even handlers
+
     function handleSubmit(e){
         e.preventDefault();
-        setBlogs([{title:formData.title, content:formData.content},...blogs]);  // Rest(...) operator what it does is to append new title and content to rest of blogs
+        // setBlogs([{title:formData.title, content:formData.content},...blogs]);  // Rest(...) operator what it does is to append new title and content to rest of blogs
+        dispatch({type:'ADD', blog:{title:formData.title, content:formData.content}})
         setFormData({title:'',content:''});
         titleRef.current.focus();
     }
 
     function removeBlog(i){
-        setBlogs(blogs.filter((blog,index)=>i!==index))
+        // setBlogs(blogs.filter((blog,index)=>i!==index))
+        dispatch({type:'REMOVE',index:i})
     }
 
     return(
