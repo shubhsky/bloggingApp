@@ -1,4 +1,5 @@
 import {useReducer, useState, useEffect, useRef} from "react";
+import {db} from "../fireBaseInit"
 
 function blogsReducer(blogs, action){
     switch(action.type){
@@ -75,7 +76,7 @@ export default function Blog(){
                 <hr/>
 
             </div>
-            <h2>Blogs</h2>
+            <h2 className="blog-heading">Blogs</h2>
             {blogs.map((blog, i)=>(
                 <div className="blog" key={i}>
                     <h3>{blog.title}</h3>
