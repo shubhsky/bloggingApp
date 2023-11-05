@@ -1,27 +1,34 @@
-import {useReducer, useState, useEffect, useRef} from "react";
+import {useState, useEffect, useRef} from "react";
 import {db} from "../fireBaseInit";
-import { collection, doc, setDoc} from "firebase/firestore"; 
+import { collection, doc, setDoc, getDocs} from "firebase/firestore"; 
 
-function blogsReducer(blogs, action){
-    switch(action.type){
-        case "ADD":
-            return [action.blog, ...blogs]
-        case "REMOVE":
-            return blogs.filter((blog,index)=>index!==action.index)
-        default:
-            return []
-    }
-}
+
 
 export default function Blog(){
 
     
     const [formData,setFormData] = useState({title:'',content:''})
-    const [blogs, dispatch] = useReducer(blogsReducer,[])
+    const [blogs, setBlogs] = useState([])
     const titleRef = useRef(null);
 
     useEffect(()=>{
         titleRef.current.focus();
+    },[])
+
+    useEffect(()=>{
+        async function fetchData(){
+            const snapShot = await getDocs(collection(db,'blogs'));
+            console.log(snapShot)
+            const blogs = snapShot.docs.map((blog)=>{
+                return{
+                    id:blog.id,
+                    ...blog.data()
+                }
+            })
+            console.log(blogs);
+            setBlogs(blogs);
+        }
+        fetchData();
     },[])
 
 
@@ -35,7 +42,7 @@ export default function Blog(){
 
     async function handleSubmit(e){
         e.preventDefault();
-        dispatch({type:'ADD', blog:{title:formData.title, content:formData.content}})
+        setBlogs([{title:formData.title, content:formData.content},...blogs]);
 
         // Add a new document with a generated id.
 
@@ -52,7 +59,7 @@ export default function Blog(){
     }
 
     function removeBlog(i){
-        dispatch({type:'REMOVE',index:i})
+        setBlogs(blogs.filter((blog,index)=>i!==index))
     }
 
     return(
