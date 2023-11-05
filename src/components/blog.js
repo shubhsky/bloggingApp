@@ -1,6 +1,6 @@
 import {useReducer, useState, useEffect, useRef} from "react";
 import {db} from "../fireBaseInit";
-import { collection, addDoc } from "firebase/firestore"; 
+import { collection, doc, setDoc} from "firebase/firestore"; 
 
 function blogsReducer(blogs, action){
     switch(action.type){
@@ -38,12 +38,14 @@ export default function Blog(){
         dispatch({type:'ADD', blog:{title:formData.title, content:formData.content}})
 
         // Add a new document with a generated id.
-        const docRef = await addDoc(collection(db, "blogs"), {
+
+        const docRef = doc(collection(db,'blogs'))
+
+        await setDoc(docRef, {
             title: formData.title,
             content: formData.content,
             createAt: new Date()
         });
-        console.log("Document written with ID: ", docRef.id);
 
         setFormData({title:'',content:''});
         titleRef.current.focus();
