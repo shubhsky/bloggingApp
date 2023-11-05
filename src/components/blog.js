@@ -1,6 +1,6 @@
 import {useState, useEffect, useRef} from "react";
 import {db} from "../fireBaseInit";
-import { collection, doc, setDoc, getDocs} from "firebase/firestore"; 
+import { collection, doc, setDoc, onSnapshot, deleteDoc} from "firebase/firestore"; 
 
 
 
@@ -16,19 +16,31 @@ export default function Blog(){
     },[])
 
     useEffect(()=>{
-        async function fetchData(){
-            const snapShot = await getDocs(collection(db,'blogs'));
-            console.log(snapShot)
+        // async function fetchData(){
+        //     const snapShot = await getDocs(collection(db,'blogs'));
+        //     console.log(snapShot)
+        //     const blogs = snapShot.docs.map((blog)=>{
+        //         return{
+        //             id:blog.id,
+        //             ...blog.data()
+        //         }
+        //     })
+        //     console.log(blogs);
+        //     setBlogs(blogs);
+        // }
+        // fetchData();
+
+// For real-time update
+
+        const unsub = onSnapshot(collection(db,'blogs'),(snapShot)=>{
             const blogs = snapShot.docs.map((blog)=>{
-                return{
-                    id:blog.id,
-                    ...blog.data()
-                }
-            })
-            console.log(blogs);
+                    return{
+                        id:blog.id,
+                        ...blog.data()
+                    }
+                })
             setBlogs(blogs);
-        }
-        fetchData();
+        })
     },[])
 
 
@@ -60,8 +72,10 @@ export default function Blog(){
         titleRef.current.focus();
     }
 
-    function removeBlog(i){
-        setBlogs(blogs.filter((blog,index)=>i!==index))
+    async function removeBlog(i){
+        // setBlogs(blogs.filter((blog,index)=>i!==index))
+        const docRef = doc(db,'blogs',i);
+        await deleteDoc(docRef)
     }
 
     return(
@@ -104,7 +118,7 @@ export default function Blog(){
                     <hr/>
                     <p>{blog.content}</p>
                     <div className="blog-btn">
-                        <button onClick={()=>removeBlog(i)} className="btn remove">
+                        <button onClick={()=>removeBlog(blog.id)} className="btn remove">
                             Delete
                         </button>
                     </div>
