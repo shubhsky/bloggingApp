@@ -16,21 +16,6 @@ export default function Blog(){
     },[])
 
     useEffect(()=>{
-        // async function fetchData(){
-        //     const snapShot = await getDocs(collection(db,'blogs'));
-        //     console.log(snapShot)
-        //     const blogs = snapShot.docs.map((blog)=>{
-        //         return{
-        //             id:blog.id,
-        //             ...blog.data()
-        //         }
-        //     })
-        //     console.log(blogs);
-        //     setBlogs(blogs);
-        // }
-        // fetchData();
-
-// For real-time update
 
         const unsub = onSnapshot(collection(db,'blogs'),(snapShot)=>{
             const blogs = snapShot.docs.map((blog)=>{
@@ -55,11 +40,6 @@ export default function Blog(){
     async function handleSubmit(e){
         e.preventDefault();
 
-        // We are setting up the blogs that should not ideally be happen
-        // setBlogs([{title:formData.title, content:formData.content},...blogs]);
-
-        // Add a new document with a generated id.
-
         const docRef = doc(collection(db,'blogs'))
 
         await setDoc(docRef, {
@@ -73,7 +53,6 @@ export default function Blog(){
     }
 
     async function removeBlog(i){
-        // setBlogs(blogs.filter((blog,index)=>i!==index))
         const docRef = doc(db,'blogs',i);
         await deleteDoc(docRef)
     }
