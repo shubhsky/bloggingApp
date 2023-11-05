@@ -42,7 +42,9 @@ export default function Blog(){
 
     async function handleSubmit(e){
         e.preventDefault();
-        setBlogs([{title:formData.title, content:formData.content},...blogs]);
+
+        // We are setting up the blogs that should not ideally be happen
+        // setBlogs([{title:formData.title, content:formData.content},...blogs]);
 
         // Add a new document with a generated id.
 
@@ -99,6 +101,7 @@ export default function Blog(){
             {blogs.map((blog, i)=>(
                 <div className="blog" key={i}>
                     <h3>{blog.title}</h3>
+                    <hr/>
                     <p>{blog.content}</p>
                     <div className="blog-btn">
                         <button onClick={()=>removeBlog(i)} className="btn remove">
